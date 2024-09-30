@@ -5,17 +5,17 @@ public class ResponseVO extends VO {
 	public ResponseVO getNext() { return next; }
 	public void setNext(ResponseVO next) { this.next = next; }
 	public ResponseVO getColumAt( int colNo ) {
-		ResponseVO searchOn = this; ResponseVO col = null;
+		ResponseVO searchOn = this;
 		if( searchOn != null && colNo == 1) {
 			return searchOn;
-		} else if( searchOn != null && colNo > 1 ) {
-			col = searchOn.getNext(); int i = 2 ;
-			while( col != null ) {
-				if( colNo == i ) break;
-				col = searchOn.getNext(); i++;
+		} else if ( searchOn != null && colNo > 1 ) {
+			searchOn = searchOn.getNext(); int i = 2 ;
+			while( searchOn != null ) {
+				if ( colNo == i ) break;
+				searchOn = searchOn.getNext(); i++;
 			}
-			return col;
+			return searchOn;
 		}
-		return col;
+		return searchOn;
 	}
 }

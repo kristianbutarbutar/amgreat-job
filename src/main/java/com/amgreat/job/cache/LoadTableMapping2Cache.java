@@ -146,9 +146,16 @@ public class LoadTableMapping2Cache {
 				
 				tcache = cache;
 				
-				System.out.println("before caching cache = " + cache.getTabelName()  );
+				cache.setCmdName("s");
 				
-				cache = cacheIt( cache );
+				AttributeVO cached = cacheIt( cache );
+				
+				if( cached !=null && cached.getId()!=null ) {//---delete 1st if exist then add cache---
+					
+					cache.setCmdName("d"); cacheIt( cache );
+				}
+				
+				cache.setCmdName("i"); cache = cacheIt( cache ); //---insert and cache it once inserted---				
 				
 				if( cache != null && cache.getTabelName() != null && cache.getTabelName().trim().equals("") ) bool = true;
 				
@@ -163,8 +170,7 @@ public class LoadTableMapping2Cache {
 	
 	private String getColumAt(ResponseVO list, int at){
 		String s = "";
-		ResponseVO searchOn = list; 
-		
+		ResponseVO searchOn = list; 		
 		if( searchOn != null && at == 1) {
 			return searchOn.getVal();
 		} else if( searchOn != null && at > 1 ) {

@@ -39,11 +39,7 @@ public class FEServices implements FEServicesInterface {
 					System.out.println("[FEServices.doCmd] Cache failed for single pageId: " + vo.getPageId() );
 			}
 			
-			System.out.println( " 1 call data, tablename = " + (attr!=null && attr.getTabelName()!=null ? attr.getTabelName(): " null") );
-			
 			if( attr != null && attr.getTabelName() != null ) {
-				
-				System.out.println("2 call data, tablename = " + attr.getTabelName() );
 				
 				r = dataAPI.callData( attr );
 				

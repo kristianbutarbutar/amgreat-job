@@ -71,7 +71,7 @@ public class DataModelling implements DataModellingIntf{
 		return s;
 	}
 	
-	private String fileReader(String fnm) {
+	private String fileReader( String fnm ) {
 		
 		String status ="";
 		 
@@ -97,7 +97,7 @@ public class DataModelling implements DataModellingIntf{
 		      
 		    } catch (FileNotFoundException e) {
 		    	
-		      System.out.println("[DataModelling.writeToFile] FileNotFoundException: An error occurred.");
+		      System.out.println("[DataModelling.fileReader] FileNotFoundException: An error occurred.");
 		      
 		      e.printStackTrace();
 		      

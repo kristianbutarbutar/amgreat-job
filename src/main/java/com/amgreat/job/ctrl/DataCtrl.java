@@ -6,10 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.amgreat.job.be.DataIntegratorIntf;
-import com.amgreat.job.be.FEServicesInterface;
 import com.amgreat.job.cache.LoadTableMapping2Cache;
 import com.amgreat.job.data.DataModellingIntf;
-import com.amgreat.job.html.FormBuilderJob;
 import com.amgreat.vo.RecordVO;
 import com.amgreat.vo.RequestVO;
 
@@ -24,9 +22,6 @@ public class DataCtrl {
 	
 	@Autowired
 	private DataModellingIntf dm; 
-	
-	@Autowired
-	private FormBuilderJob job;
 	
 	@RequestMapping( "/amgreate/api/job/interface" )
 	public RecordVO callData( @RequestBody RequestVO request ) {
@@ -47,11 +42,6 @@ public class DataCtrl {
 	@RequestMapping( "/amgreate/api/job/loadcache" )
 	public boolean loadCache( ) {
 		return loader.loadTableMapping2Cache("all");
-	}
-	
-	@RequestMapping( "/amgreate/api/job/form" )
-	public boolean loadFormCache( ) {
-		return job.generateFormHtml();
 	}
 	
 }

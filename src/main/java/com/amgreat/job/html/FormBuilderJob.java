@@ -35,7 +35,8 @@ public class FormBuilderJob implements JobInterface {
 		
 		req.setTabelName("t_form");
 		req.setColumnName("id");req.setName("__id");req.setValue(""); req.setType("str"); req = req.setNext(new AttributeVO());
-		req.setColumnName("pid");req.setName("__pid");req.setValue(""); req.setType("str");
+		req.setColumnName("pid");req.setName("__pid");req.setValue(""); req.setType("str"); req = req.setNext(new AttributeVO());
+		req.setColumnName("label");req.setName("__label");req.setValue(""); req.setType("str"); 
 		
 		RecordVO rp = new RecordVO(); preq.setCmdName("s");
 		
@@ -48,13 +49,14 @@ public class FormBuilderJob implements JobInterface {
 		
 		if( r != null ) {
 			
-			RecordVO result = r; int i = 1; 
+			RecordVO records = r; int i = 1; 
 			
-			while( result != null ) {
+			while( records != null ) {
 				
-				ResponseVO columns = result.getResponse(); // -- get columns --
+				ResponseVO columns = records.getResponse(); // -- get columns --
 				
-				String tableId = this.getColumAt( result.getResponse(), 1);
+				String tableId = this.getColumAt( records.getResponse(), 1);
+				String tableLabel = this.getColumAt( records.getResponse(), 3);
 				
 				AttributeVO findVO = new AttributeVO(); findVO.setId( tableId ); findVO.setCmdName("s");
 				
@@ -63,15 +65,20 @@ public class FormBuilderJob implements JobInterface {
 				//---generate html form here---
 				if( findVO != null && findVO.getTypeId() != null && !findVO.getTypeId().trim().equals("") ) {
 					
-					PageVO pvo = new PageVO(); pvo.setId( tableId ); pvo.setCmdName("i");
+					PageVO pvo = new PageVO(); pvo.setId( tableId ); pvo.setPageLabel( tableLabel.toUpperCase() );
 					
 					String page = wrapPage( findVO );
 					
 					pvo.setHtml( page );
 					
-					if( page != null && page.trim().length() > 10 ) this.cacheIt(pvo);
+					if( page != null && page.trim().length() > 10 ) {
+						// delete first then delete
+						pvo.setCmdName("d"); this.cacheIt(pvo);
+						// then insert to cache
+						pvo.setCmdName("i"); this.cacheIt(pvo);
+					}
 				}
-				result = result.getNext();
+				records = records.getNext();
 			}
 		}
 		return bool;

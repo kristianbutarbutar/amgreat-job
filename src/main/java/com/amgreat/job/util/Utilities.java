@@ -7,6 +7,7 @@ import com.amgreat.vo.RecordVO;
 import com.amgreat.vo.ResponseVO;
 
 public class Utilities {
+	
     public static String getRandomText(int len) {
         StringBuilder b = new StringBuilder();
         Random r = new Random();

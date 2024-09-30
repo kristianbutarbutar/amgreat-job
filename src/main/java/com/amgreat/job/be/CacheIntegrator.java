@@ -10,6 +10,7 @@ import com.amgreat.vo.ListVO;
 import com.amgreat.vo.PageVO;
 import com.amgreat.vo.RecordVO;
 import com.amgreat.vo.RequestVO;
+import com.amgreat.vo.TemplateVO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
@@ -28,6 +29,12 @@ public class CacheIntegrator implements CacheIntegratorIntf {
 	@Value("${cache.page.uri}")
 	private String cachePageUri;
 	
+	@Value("${cache.template.uri}")
+	private String cacheTemplateUri;
+	
+	@Value("${cache.html.uri}")
+	private String cacheHtmlUri;
+	
 	public AttributeVO recordVO2AttributeVO( RequestVO request ) {
 		
 		AttributeVO rq = new AttributeVO();
@@ -45,7 +52,7 @@ public class CacheIntegrator implements CacheIntegratorIntf {
 				rp = restTemplate.postForObject( cacheUri, req, AttributeVO.class );
             }
 		} catch (Exception e) {
-			System.out.println("DataIntegrator.callData.AttributeVO: " + e.getMessage());
+			System.out.println("CacheIntegrator.callData.AttributeVO: " + e.getMessage());
 			rp = null;
 		}
 		return rp;
@@ -61,7 +68,7 @@ public class CacheIntegrator implements CacheIntegratorIntf {
 				rp = restTemplate.postForObject( cacheUri, req, RecordVO.class );
             }
 		} catch (Exception e) {
-			System.out.println("DataIntegrator.callData.RequestVO: " + e.getMessage());
+			System.out.println("CacheIntegrator.callData.RequestVO: " + e.getMessage());
 		}
 		return rp;
 	}
@@ -74,7 +81,7 @@ public class CacheIntegrator implements CacheIntegratorIntf {
 				rp = restTemplate.postForObject( cacheFormUri, request, ListVO.class );
             }
 		} catch (Exception e) {
-			System.out.println("DataIntegrator.callData.ListVO: " + e.getMessage());
+			System.out.println("CacheIntegrator.callData.ListVO: " + e.getMessage());
 		}
 		return rp;
 	}
@@ -87,11 +94,38 @@ public class CacheIntegrator implements CacheIntegratorIntf {
 				rp = restTemplate.postForObject( cachePageUri, request, PageVO.class );
             }
 		} catch (Exception e) {
-			System.out.println("DataIntegrator.callData.PageVO: " + e.getMessage());
+			System.out.println("CacheIntegrator.callData.PageVO: " + e.getMessage());
+		}
+		return rp;
+	}
+
+	@Override
+	public PageVO callCache( PageVO request, String par) {
+		PageVO rp = null;
+		try {
+			if ( request != null ) {
+				System.out.println("callCache(pageVO, par) " + cacheHtmlUri );
+				rp = restTemplate.postForObject( cacheHtmlUri, request, PageVO.class );
+            }
+		} catch (Exception e) {
+			System.out.println("CacheIntegrator.callData.PageVO: " + e.getMessage());
 		}
 		return rp;
 	}
 	
+	@Override
+	public TemplateVO callCache(TemplateVO request) {
+		TemplateVO rp = null;
+		try {
+			if ( request != null ) {
+				rp = restTemplate.postForObject( cacheTemplateUri, request, TemplateVO.class );
+            }
+		} catch (Exception e) {
+			System.out.println("CacheIntegrator.callData.TemplateVO: " + e.getMessage());
+		}
+		return rp;
+	}
+
 	@Override
 	public RecordVO load2Cache(RequestVO request) {
 		// TODO Auto-generated method stub
